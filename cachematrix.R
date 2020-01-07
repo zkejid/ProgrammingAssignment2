@@ -1,9 +1,8 @@
-## File contains functions to handle inversion of large matrices.
-## For those matrices insersion is a long process. Caching of result
-## should improve performance on repeated inversion operations.
+## File contains functions to handle inverse of large matrices.
+## For those matrices inverse computing is a long process. Result
+## of computation should be stored into cache to improve performance.
 
-## Function creates a "storage" for original matrix and its inversion
-
+## Function creates a "storage" for original matrix x and its inversion
 makeCacheMatrix <- function(x = matrix()) {
     if (!is.matrix(x)) {
         simpleError("First argument should be matrix")
@@ -20,15 +19,15 @@ makeCacheMatrix <- function(x = matrix()) {
 }
 
 
-## Function returns inversion for matrix from "storage" object (if available).
-## Othervise computes inversion, stores it into object and returns as function
-## result.
+## Function returns inverse for matrix from "storage" object x (if available).
+## Othervise computes inverse, stores it into object and returns as function
+## result. Dot-dot-dot arguments are passed to solve function as is.
 
-cacheSolve <- function(x) {
+cacheSolve <- function(x, ...) {
     inv <- x$getinversion() 
     if (is.null(inv)) {
         m <- x$get()
-        inv <- solve(m)
+        inv <- solve(m, ...)
         x$setinversion(inv)
     }
     inv
